@@ -17,7 +17,7 @@ This file may not be copied, modified, or distributed except according to those 
 mod generation;
 mod validation;
 
-pub use {generation::generate_product_key, validation::validate_product_key};
+pub use {generation::generate_product_key, validation::validate_product_key, generation::Keytype::{OEM, Retail}};
 
 #[cfg(test)]
 mod tests {

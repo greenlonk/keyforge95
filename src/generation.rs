@@ -17,6 +17,12 @@ pub enum Choice {
     E,
 }
 
+#[derive(Debug)]
+pub enum Keytype {
+    Retail,
+    OEM,
+}
+
 use Choice::{A, B, C, D, E};
 
 /// Generates a valid product key
@@ -24,9 +30,9 @@ use Choice::{A, B, C, D, E};
 /// # Example
 ///
 /// ```
-/// use keyforge95::generate_product_key;
+/// use keyforge95::*;
 /// for _ in 0..10 {
-///     let product_key: String = generate_product_key("retail"); // Both, "retail" and "oem" are available
+///     let product_key: String = generate_product_key(Retail); // Both, "retail" and "oem" are available
 ///     assert_eq!(product_key.len(), 11);
 ///     assert_eq!(product_key.chars().nth(3).unwrap(), '-');
 /// }
@@ -36,13 +42,13 @@ use Choice::{A, B, C, D, E};
 /// Will panic if no argument or any argument other than "retail" or "oem" is used.
 #[must_use]
 #[cfg_attr(target_arch = "wasm32", wasm_bindgen)]
-pub fn generate_product_key(key_type: &str) -> String {
+pub fn generate_product_key(key_type: Keytype) -> String {
     // Use generate_block() for product key generation and print it with the right format
     match key_type {
-        "retail" => {
+        Keytype::Retail => {
             format!("{}-{}", generate_block(&A), generate_block(&C))
         }
-        "oem" => {
+        Keytype::OEM => {
             format!(
                 "{}-OEM-{}-{}",
                 generate_block(&B),
@@ -50,7 +56,6 @@ pub fn generate_product_key(key_type: &str) -> String {
                 generate_block(&E)
             )
         }
-        _ => panic!("Invalid choice: {key_type}. Only 'retail' or 'oem' allowed."),
     }
 }
 
